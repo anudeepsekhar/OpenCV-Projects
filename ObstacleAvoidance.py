@@ -65,6 +65,9 @@ while(1):
     for i in range(c):
         res_x += c[i][0]
         res_y -= c[i][1]
+        
+    if(res_y > 0):
+        res_y = 0
     cv2.line(frame,(320,480),(int(res_x),int(res_y)),(0,255,0),3)
     ##    print (max_row_inds) 
     inds_after_edges = row_inds >= max_row_inds
