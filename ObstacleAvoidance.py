@@ -76,6 +76,16 @@ while(1):
     arg = math.degrees(math.atan2(480-max_point[1],320-max_point[0]))-90
     print arg
     
+    if(max_dist < 1000):
+        if(arg>-20 and arg<20):
+            print("go straight")
+        elif(arg>= 20):
+            print("turn right")
+        elif(arg<=-20):
+            print("turn left")
+    else:
+        print("stop")
+
     kernele = np.ones((5, 5), np.uint8)
     filled_from_bottom = cv2.erode(filled_from_bottom, kernele)
     
