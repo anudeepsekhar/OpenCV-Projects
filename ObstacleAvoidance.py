@@ -1,8 +1,19 @@
 import cv2
 import numpy as np
+import math
 
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
+
+def calc_dist(p1,p2):
+    x1 = p1[0]
+    y1 = p1[1]
+    x2 = p2[0]
+    y2 = p2[1]
+    
+    dist = np.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return dist
+    
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
@@ -14,7 +25,7 @@ def chunks(l, n):
 
 while(1):
     _,frame = cap.read()
-    print(frame.shape)
+    # print(frame.shape)
 
     img = frame.copy()
 
@@ -45,6 +56,7 @@ while(1):
     p = chunks(cords,int(len(cords)/5))
 ##    print(p[0])
     c = []
+    max_dist = 0
     for i in range(5):
         
         x_vals = []
@@ -56,19 +68,18 @@ while(1):
         avg_x = sum(x_vals)/len(x_vals)
         avg_y = sum(y_vals)/len(y_vals)
         cv2.line(frame,(320,480),(int(avg_x),int(avg_y)),(255,0,0),2)
-        cx = avg_x - 320
-        cy = 480 - avg_y
-        c.append([cx,cy])
-    print(c)
-    res_x = 320
-    res_y = 480
-    for i in range(c):
-        res_x += c[i][0]
-        res_y -= c[i][1]
+        dist = calc_dist([320,480],[avg_x,avg_y])
+        if(dist>max_dist):
+            max_dist = dist
+            max_point = (avg_x,avg_y)
         
-    if(res_y > 0):
-        res_y = 0
-    cv2.line(frame,(320,480),(int(res_x),int(res_y)),(0,255,0),3)
+    
+    cv2.line(frame,(320,480),max_point,(0,255,0),3)
+    arg = math.degrees(math.atan2(480-max_point[1],320-max_point[0]))
+    print arg
+        
+        
+    
     ##    print (max_row_inds) 
     inds_after_edges = row_inds >= max_row_inds
     # print(inds_after_edges) 
