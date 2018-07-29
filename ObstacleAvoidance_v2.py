@@ -74,6 +74,19 @@ while(1):
             
     cv2.line(frame,(320,480),max_point,(0,255,0),3)
 
+    arg = math.degrees(math.atan2(480-max_point[1],320-max_point[0]))-90
+    print arg
+    
+    if(max_dist < 1000):
+        if(arg>-20 and arg<20):
+            print("go straight")
+        elif(arg>= 20):
+            print("turn right")
+        elif(arg<=-20):
+            print("turn left")
+    else:
+        print("stop")
+
     cv2.imshow("frame",frame)
     cv2.imshow("Canny",edges)
     cv2.imshow("result",img)
